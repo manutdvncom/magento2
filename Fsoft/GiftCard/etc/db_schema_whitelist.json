@@ -1,0 +1,16 @@
+{
+    "giftcard_code": {
+        "column": {
+            "giftcard_id": true,
+            "code": true,
+            "balance": true,
+            "amount_used": true,
+            "created_form": true,
+            "created_at": true,
+            "created_from": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

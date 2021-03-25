@@ -1,0 +1,16 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="giftcard_code" resource="default" engine="innodb" comment="GiftCard Table">
+        <column xsi:type="int" name="giftcard_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="GiftCard ID"/>
+        <column xsi:type="varchar" name="code" length="50" nullable="false" comment="Code"/>
+        <column xsi:type="decimal" name="balance" nullable="false" comment="Balance"/>
+        <column xsi:type="decimal" name="amount_used" nullable="true" comment="Amount Used"/>
+        <column xsi:type="varchar" name="created_from" length="50" nullable="false" comment="Code"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Creation Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="giftcard_id"/>
+        </constraint>
+    </table>
+</schema>
