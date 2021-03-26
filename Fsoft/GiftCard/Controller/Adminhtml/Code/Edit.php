@@ -1,29 +1,38 @@
 <?php
 namespace Fsoft\GiftCard\Controller\Adminhtml\Code;
 
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\Controller\ResultFactory;
 use Fsoft\GiftCard\Model\GiftCardFactory;
+use Fsoft\GiftCard\Model\ResourceModel\GiftCard\CollectionFactory;
+use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\RedirectFactory;
 use Magento\Framework\Registry;
+use Magento\Framework\View\Result\PageFactory;
 
-class Edit extends \Magento\Backend\App\Action
+class Edit extends \Magento\Backend\App\Action implements \Magento\Framework\App\Action\HttpGetActionInterface
 {
     protected $giftCardFactory;
     protected $resultRedirect;
-    protected $resultFactory;
+    protected $collection;
     protected $registry;
-    public function __construct(Context $context, GiftCardFactory $giftCardFactory, RedirectFactory $redirectFactory, Registry $registry, ResultFactory $resultFactory)
-    {
+    protected $pageFactory;
+    public function __construct(
+        Context $context,
+        GiftCardFactory $giftCardFactory,
+        RedirectFactory $redirectFactory,
+        Registry $registry,
+        CollectionFactory $collection,
+        PageFactory $pageFactory
+    ) {
         parent::__construct($context);
         $this->giftCardFactory = $giftCardFactory;
         $this->resultRedirect = $redirectFactory;
         $this->registry = $registry;
-        $this->resultFactory = $resultFactory;
+        $this->collection = $collection;
+        $this->pageFactory = $pageFactory;
     }
     protected function _initAction()
     {
-        $resultPage = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
+        $resultPage = $this->pageFactory->create();
         return $resultPage;
     }
 
@@ -31,17 +40,18 @@ class Edit extends \Magento\Backend\App\Action
     {
         $id = $this->getRequest()->getParam('id');
         $data = $this->giftCardFactory->create();
-//        echo "<pre>";var_dump($id); echo "</pre>"; die;
-        if ($id){
+//        echo "<pre>";print_r($items['code']); echo "</pre>"; die;
+        if ($id) {
             $data->load($id);
-            if(!$data->getId()){
+            if (!$data->getId()) {
                 $this->getMessageManager()->addErrorMessage(__('This page no longer exists!!!'));
                 $resultRedirect = $this->resultRedirect->create();
                 return $resultRedirect->setPath('*/*/');
             }
         }
-        $this->registry->register('giftcard',$data);
+//        $this->registry->register('giftcard_code_model', $data);
         $resultPage = $this->_initAction();
-        return $resultPage->getConfig()->getTitle()->prepend($data->getId() ? $data->getCode() : __('HelloWorld'));
+        $resultPage->getConfig()->getTitle()->prepend($data->getId() ? __('Code #') . $data->getCode() : __('HelloWorld'));
+        return $resultPage;
     }
 }

@@ -1,0 +1,42 @@
+<?php $data = $block->getList(); ?>
+<?php if($data && count($data)): ?>
+<div class="table-wrapper downloadable-products">
+    <table id="my-downloadable-products-table" class="data table table-downloadable-products">
+        <caption class="table-caption"><?php echo __('List Event') ?></caption>
+        <thead>
+        <tr>
+            <th scope="col" class="col title"><?php echo __('ID') ?></th>
+            <th scope="col" class="col title"><?php echo __('Code') ?></th>
+            <th scope="col" class="col title"><?php echo __('Balance') ?></th>
+            <th scope="col" class="col title"><?php echo __('Amount Used') ?></th>
+            <th scope="col" class="col title"><?php echo __('Created From') ?></th>
+            <th scope="col" class="col title"><?php echo __('Created At') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($data as $item): ?>
+            <tr>
+                <td data-th="<?php echo $block->escapeHtml(__('ID')) ?>" class="col title">
+                    <?php echo $item['giftcard_id'] ?>
+                </td>
+                <td data-th="<?php echo $block->escapeHtml(__('Code')) ?>" class="col title">
+                    <?php echo $item['code'] ?>
+                </td>
+                <td data-th="<?php echo $block->escapeHtml(__('Balance')) ?>" class="col title">
+                    <?php echo $item['balance'] ?>
+                </td>
+                <td data-th="<?php echo $block->escapeHtml(__('Amount Used')) ?>" class="col title">
+                    <?php echo $item['amount_used'] ?>
+                </td>
+                <td data-th="<?php echo $block->escapeHtml(__('Created From')) ?>" class="col title">
+                    <?php echo $item['created_from'] ?>
+                </td>
+                <td data-th="<?php echo $block->escapeHtml(__('Created At')) ?>" class="col title">
+                    <?php echo $item['created_at'] ?>
+                </td>
+            </tr>
+            <?php endforeach;?>
+        </tbody>
+    </table>
+</div>
+<?php endif; ?>

@@ -13,5 +13,8 @@
             <argument name="resourceModel" xsi:type="string">Fsoft\GiftCard\Model\ResourceModel\GiftCard</argument>
         </arguments>
     </virtualType>
+    <type name="Fsoft\GiftCard\Controller\Index\Code">
+        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+    </type>
 </config>
 

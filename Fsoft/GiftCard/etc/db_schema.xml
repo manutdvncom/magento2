@@ -13,4 +13,23 @@
             <column name="giftcard_id"/>
         </constraint>
     </table>
+    <table name="giftcard_history" resource="default" engine="innodb" comment="GiftCard History">
+        <column xsi:type="int" name="history_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="History ID"/>
+        <column xsi:type="int" name="giftcard_id" padding="10" unsigned="true" nullable="false" comment="GiftCard ID"/>
+        <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="false" comment="Customer ID"/>
+        <column xsi:type="decimal" name="amount" nullable="false" comment="Amount Used"/>
+        <column xsi:type="varchar" name="action" length="50" nullable="false" comment="Action Change - create/redeem/Used for order"/>
+        <column xsi:type="timestamp" name="action_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Action Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="history_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="history_giftcard_id"
+                    table="giftcard_history" column="history_id" referenceTable="giftcard_code"
+                    referenceColumn="giftcard_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="history_customer_id"
+                    table="giftcard_history" column="customer_id" referenceTable="customer_entity"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
 </schema>

@@ -12,5 +12,20 @@
         "constraint": {
             "PRIMARY": true
         }
+    },
+    "giftcard_history": {
+        "column": {
+            "history_id": true,
+            "giftcard_id": true,
+            "customer_id": true,
+            "amount": true,
+            "action": true,
+            "action_time": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "GIFTCARD_HISTORY_HISTORY_ID_GIFTCARD_CODE_GIFTCARD_ID": true,
+            "GIFTCARD_HISTORY_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true
+        }
     }
 }
