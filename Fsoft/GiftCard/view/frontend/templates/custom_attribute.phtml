@@ -1,0 +1,13 @@
+<?php
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_product = $block->getProduct();
+?>
+<div class="">
+    <?php
+    $attribute = $_product->getResource()->getAttribute('giftcard_amount');
+    if ($attribute)
+    {
+     $attr_value = $attribute ->getFrontend()->getValue($_product); ?>
+     <?= $block->escapeHtml(__('Giftcard Amount: ')). $attr_value ?>
+    <?php } ?>
+</div>
