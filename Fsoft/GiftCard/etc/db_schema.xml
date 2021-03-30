@@ -1,7 +1,7 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="giftcard_code" resource="default" engine="innodb" comment="GiftCard Table">
-        <column xsi:type="int" name="giftcard_id" padding="10" unsigned="true" nullable="false" identity="true"
+        <column xsi:type="int" name="giftcard_id" padding="11" unsigned="true" nullable="false" identity="true"
                 comment="GiftCard ID"/>
         <column xsi:type="varchar" name="code" length="50" nullable="false" comment="Code"/>
         <column xsi:type="decimal" name="balance" nullable="false" comment="Balance"/>
@@ -14,10 +14,10 @@
         </constraint>
     </table>
     <table name="giftcard_history" resource="default" engine="innodb" comment="GiftCard History">
-        <column xsi:type="int" name="history_id" padding="10" unsigned="true" nullable="false" identity="true"
+        <column xsi:type="int" name="history_id" padding="11" unsigned="true" nullable="false" identity="true"
                 comment="History ID"/>
-        <column xsi:type="int" name="giftcard_id" padding="10" unsigned="true" nullable="false" comment="GiftCard ID"/>
-        <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="false" comment="Customer ID"/>
+        <column xsi:type="int" name="giftcard_id" padding="11" unsigned="true" nullable="false" comment="GiftCard ID"/>
+        <column xsi:type="int" name="customer_id" padding="11" unsigned="true" nullable="false" comment="Customer ID"/>
         <column xsi:type="decimal" name="amount" nullable="false" comment="Amount Used"/>
         <column xsi:type="varchar" name="action" length="50" nullable="false" comment="Action Change - create/redeem/Used for order"/>
         <column xsi:type="timestamp" name="action_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
