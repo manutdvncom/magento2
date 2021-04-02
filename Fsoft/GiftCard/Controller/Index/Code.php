@@ -11,31 +11,24 @@ use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\App\ResourceConnection;
 use Fsoft\GiftCard\Model\ResourceModel\History\CollectionFactory;
+use Magento\Customer\Model\Session;
 class Code extends Action implements HttpGetActionInterface
 {
     protected $joinFactory;
     protected $resourceConnection;
     protected $pageFactory;
-    public function __construct(Context $context, PageFactory $pageFactory, ResourceConnection $resourceConnection, CollectionFactory $joinFactory)
+    protected $customerSession;
+    public function __construct(Context $context, PageFactory $pageFactory, ResourceConnection $resourceConnection, CollectionFactory $joinFactory, Session $customerSession)
     {
         $this->joinFactory = $joinFactory;
         $this->resourceConnection = $resourceConnection;
         $this->pageFactory = $pageFactory;
+        $this->customerSession = $customerSession;
         parent::__construct($context);
     }
 
     public function execute()
     {
-        $customerTable = $this->resourceConnection->getTableName('customer_entity');
-        $joinCollection = $this->joinFactory->create();
-        $joinCollection
-            ->join(
-                ['ot' => $customerTable],
-                "main_table.customer_id = ot.customer_id"
-            );
-
-        echo $joinCollection->getSelect();
-        die;
         $resultPage = $this->pageFactory->create();
         $resultPage->getConfig()->getTitle()->set(__('My Gift Card'));
         $block = $resultPage->getLayout()->getBlock('my.giftcard');
