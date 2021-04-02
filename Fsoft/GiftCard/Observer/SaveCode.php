@@ -44,9 +44,9 @@ class SaveCode implements \Magento\Framework\Event\ObserverInterface
         /** @var \Magento\Sales\Model\Order $order */
         $giftcardcollection = $this->giftCardCollection->create();
         $customer_id = $this->customerSession->getCustomer()->getId();
-        $extensionAttributes = $order->getCustomAttribute('giftcard_amount');
         $increment_id = $order->getIncrementId();
         $order_id = !empty($order->getId()) ? $order->getId() : null;
+        $quote_id = !empty($quote->getId()) ? $quote->getId() : null;
         $history = $this->historyFactory->create();
         $giftcard = $this->giftCardFactory->create();
         $random = $this->randomString->getRandomString(12);
@@ -61,7 +61,7 @@ class SaveCode implements \Magento\Framework\Event\ObserverInterface
                         $history->addData([
                             'giftcard_id' => $gc_id,
                             'customer_id' => $customer_id,
-                            'amount' => $order_price,
+                            'amount' => $giftcard_balance,
                             'action' => __('Created From #') . $increment_id,
                             'action_time' => $order_created_at
                         ])->save();
@@ -73,6 +73,13 @@ class SaveCode implements \Magento\Framework\Event\ObserverInterface
                     'amount_used' => '1500',
                     'created_from' => __('Created From #') . $increment_id
                 ])->save();
+                if ($quote_id){
+                    $quote->addData([
+                        'giftcard_code' => $random,
+                        'giftcard_base_discount' => $giftcard_balance,
+                        'giftcard_discount' => $giftcard_balance
+                    ])->save();
+                }
             }
         }
         $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/test.log');

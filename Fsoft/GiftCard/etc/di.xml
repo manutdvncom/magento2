@@ -16,5 +16,8 @@
     <type name="Fsoft\GiftCard\Controller\Index\Code">
         <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
+    <type name="Magento\Quote\Model\CouponManagement">
+        <plugin name="check_giftcard_code" type="Fsoft\GiftCard\Plugin\CheckCode" sortOrder="1" disabled="false"/>
+    </type>
 </config>
 
