@@ -52,9 +52,8 @@ class SaveCode implements \Magento\Framework\Event\ObserverInterface
         $random = $this->randomString->getRandomString(12);
         foreach ($order->getAllItems() as $item) {
             $giftcard_balance = $item->getProduct()->getResource()->getAttributeRawValue($item->getProduct()->getId(), 'giftcard_amount', $this->_storeManager->getStore()->getId());
-            $order_price = $item->getData('price');
             $order_created_at = $item->getData('created_at');
-            if ($order_id) {
+            if ($order_id && $quote_id) {
                 foreach ($giftcardcollection->getItems() as $gcitem) {
                     $gc_id = $gcitem['giftcard_id'];
                     if ($gc_id) {
@@ -73,18 +72,11 @@ class SaveCode implements \Magento\Framework\Event\ObserverInterface
                     'amount_used' => '1500',
                     'created_from' => __('Created From #') . $increment_id
                 ])->save();
-                if ($quote_id){
-                    $quote->addData([
-                        'giftcard_code' => $random,
-                        'giftcard_base_discount' => $giftcard_balance,
-                        'giftcard_discount' => $giftcard_balance
-                    ])->save();
-                }
             }
         }
-        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/test.log');
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->debug($increment_id);
+//        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/test.log');
+//        $logger = new \Zend\Log\Logger();
+//        $logger->addWriter($writer);
+//        $logger->debug($increment_id);
     }
 }

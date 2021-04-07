@@ -19,5 +19,8 @@
     <type name="Magento\Quote\Model\CouponManagement">
         <plugin name="check_giftcard_code" type="Fsoft\GiftCard\Plugin\CheckCode" sortOrder="1" disabled="false"/>
     </type>
+    <type name="Magento\Checkout\Controller\Cart\CouponPost">
+        <plugin name="fsoft_giftcard_couponpost" type="Fsoft\GiftCard\Plugin\CouponPostPlugin" sortOrder="10" disabled="false"/>
+    </type>
 </config>
 

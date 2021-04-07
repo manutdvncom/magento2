@@ -7,7 +7,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 class CheckCode
 {
-    private $giftcardCollectionFactory;
+    protected $giftcardCollectionFactory;
+
     public function __construct(
         CollectionFactory $giftcardCollectionFactory
     ) {
@@ -19,33 +20,24 @@ class CheckCode
         $collection = $this->giftcardCollectionFactory->create()
             ->addFieldToSelect('code');
         $code = $collection->getData();
-        foreach ($code as $item){
-            if ($quote) {
+        foreach ($code as $item) {
+//            echo "<pre>";
+//            print_r($item);
+//            echo "</pre>";
+//            die;
+            if ($cartId) {
+                $quote->setCouponCode($couponCode);
+                $subject->quoteRepository->save($quote->collectTotals());
                 if ($couponCode == $item['code']) {
-                    throw new NoSuchEntityException(__("Hello."));
+                    return true;
                 }
             }
         }
     }
-
-    public function afterSet(\Magento\Quote\Model\CouponManagement $subject, $cartId, $couponCode)
+    public function beforeGet(\Magento\Quote\Model\CouponManagement $subject, $cartId)
     {
 //        $quote = $subject->quoteRepository->getActive($cartId);
-//        $collection = $this->giftcardCollectionFactory->create()
-//            ->addFieldToSelect('code');
-//        $code = $collection->getData();
-//        foreach ($code as $item){
-//            if ($quote) {
-//                if ($couponCode == $item['code']) {
-//                    throw new NoSuchEntityException(
-//                        __("The coupon code isn't valid. Verify the code and try again.")
-//                    );
-//                }
-//            }
-//        }
-        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/test.log');
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->debug('Test after set');
+//        return $quote->getCouponCode();
+
     }
 }
