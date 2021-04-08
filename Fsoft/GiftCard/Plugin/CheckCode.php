@@ -2,42 +2,39 @@
 
 namespace Fsoft\GiftCard\Plugin;
 
-use Fsoft\GiftCard\Model\ResourceModel\GiftCard\CollectionFactory;
-use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Customer\Model\Session;
 
 class CheckCode
 {
-    protected $giftcardCollectionFactory;
+    protected $customerSession;
+    protected $couponPlugin;
 
     public function __construct(
-        CollectionFactory $giftcardCollectionFactory
+        Session $customerSession,
+        CouponPostPlugin $couponPlugin
     ) {
-        $this->giftcardCollectionFactory = $giftcardCollectionFactory;
+        $this->customerSession = $customerSession;
+        $this->couponPlugin = $couponPlugin;
     }
     public function beforeSet(\Magento\Quote\Model\CouponManagement $subject, $cartId, $couponCode)
     {
+        $customer_id = $this->customerSession->getCustomer()->getId();
+        $data = $this->couponPlugin->getGiftCardCode();
         $quote = $subject->quoteRepository->getActive($cartId);
-        $collection = $this->giftcardCollectionFactory->create()
-            ->addFieldToSelect('code');
-        $code = $collection->getData();
-        foreach ($code as $item) {
-//            echo "<pre>";
-//            print_r($item);
-//            echo "</pre>";
-//            die;
-            if ($cartId) {
-                $quote->setCouponCode($couponCode);
-                $subject->quoteRepository->save($quote->collectTotals());
-                if ($couponCode == $item['code']) {
-                    return true;
-                }
+        foreach ($data->getData() as $item) {
+            if ($couponCode == $item['code'] && $customer_id == $item['customer_id']) {
+                $quote->setCouponCode($couponCode)->collectTotals()->save();
+                $subject->quoteRepository->save($quote);
+                $test = $quote->getCouponCode();
+                $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/test.log');
+                $logger = new \Zend\Log\Logger();
+                $logger->addWriter($writer);
+                $logger->debug($couponCode);
+                $logger->debug($item);
+                return [$cartId,$test];
             }
         }
-    }
-    public function beforeGet(\Magento\Quote\Model\CouponManagement $subject, $cartId)
-    {
-//        $quote = $subject->quoteRepository->getActive($cartId);
-//        return $quote->getCouponCode();
 
+//        return [$cartId,$quote->getCouponCode()];
     }
 }

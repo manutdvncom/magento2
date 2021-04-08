@@ -12,6 +12,8 @@ class CouponPostPlugin
     protected $customer;
     protected $collection;
     protected $resourceConnection;
+    protected $cart;
+    protected $quoteRepository;
     public function __construct
     (
         GiftCardFactory $giftCardFactory,
@@ -25,7 +27,7 @@ class CouponPostPlugin
         $this->collection = $collection;
         $this->resourceConnection = $resourceConnection;
     }
-    protected function getGiftCardCode(){
+    public function getGiftCardCode(){
         $customerTable = $this->resourceConnection->getTableName('customer_entity');
         $giftcardTable = $this->resourceConnection->getTableName('giftcard_code');
         $customer_id = $this->customer->getCustomer()->getId();
@@ -77,6 +79,7 @@ class CouponPostPlugin
 //                    print_r($giftcard->getId());
 //                    echo "</pre>";
 //                    die;
+
                 if ($codeLength && $item['code'] == $giftcardCode) {
                     if ($giftcard->getId() && $item['customer_id'] == $customer_id) {
                         $subject->_checkoutSession->getQuote()->setCouponCode($giftcardCode)->save();
